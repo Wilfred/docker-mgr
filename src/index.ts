@@ -35,7 +35,9 @@ app.get("/containers", async (_req: Request, res: Response) => {
     res.json(result);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    res.status(500).json({ error: "Failed to list containers", details: message });
+    res
+      .status(500)
+      .json({ error: "Failed to list containers", details: message });
   }
 });
 
@@ -46,7 +48,7 @@ app.get("/", async (_req: Request, res: Response) => {
       .map((c) => {
         const name = c.Names[0]?.replace(/^\//, "") ?? c.Id.slice(0, 12);
         return `<tr><td>${escapeHtml(name)}</td><td>${escapeHtml(
-          formatAge(c.Created)
+          formatAge(c.Created),
         )}</td><td>${escapeHtml(c.Status)}</td></tr>`;
       })
       .join("");
